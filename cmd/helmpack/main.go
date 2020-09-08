@@ -1,5 +1,0 @@
-package helmpack
-
-func main() {
-
-}

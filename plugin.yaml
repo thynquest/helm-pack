@@ -2,6 +2,9 @@ name: "pack"
 version: "0.0.1"
 description: "Inject values during helm package"
 command: "$HELM_PLUGIN_DIR/bin/helmpack"
+downloaders:
+- command: "bin/helmpack"
+useTunnel: false
 hooks:
   install: "cd $HELM_PLUGIN_DIR; scripts/install_plugin.sh"
   update: "cd $HELM_PLUGIN_DIR; scripts/install_plugin.sh"

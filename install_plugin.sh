@@ -12,11 +12,11 @@ echo "Downloading and installing helm-pack v${version} ..."
 
 url=""
 if [ "$(uname)" = "Darwin" ]; then
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-pack_${version}_darwin_amd64.tar.gz"
-elif [ "$(uname)" = "Linux" ] ; then
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-pack_${version}_linux_amd64.tar.gz"
+    url="https://github.com/thynquest/helm-pack/releases/download/v${version}/helm-pack_${version}_darwin_amd64.tar.gz"
+else [ "$(uname)" = "Linux" ] ; then
+    url="https://github.com/thynquest/helm-pack/releases/download/v${version}/helm-pack_${version}_linux_amd64.tar.gz"
 else
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-pack_${version}_windows_amd64.tar.gz"
+    url="https://github.com/thynquest/helm-pack/releases/download/v${version}/helm-pack_${version}_windows_amd64.tar.gz"
 fi
 
 echo $url
@@ -31,6 +31,6 @@ else
     wget -q "${url}" -O "releases/v${version}.tar.gz"
 fi
 tar xzf "releases/v${version}.tar.gz" -C "releases/v${version}"
-mv "releases/v${version}/bin/helmpush" "bin/helmpush" || \
-    mv "releases/v${version}/bin/helmpush.exe" "bin/helmpush"
+mv "releases/v${version}/bin/helmpack" "bin/helmpack" || \
+    mv "releases/v${version}/bin/helmpack.exe" "bin/helmpack"
 

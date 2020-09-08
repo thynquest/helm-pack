@@ -9,10 +9,11 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"helm.sh/helm/v3/pkg/action"
+	"github.com/thynquest/helm-pack/manager"
 	"helm.sh/helm/v3/pkg/cli/values"
 	"helm.sh/helm/v3/pkg/downloader"
 	"helm.sh/helm/v3/pkg/getter"
+	"k8s.io/client-go/util/homedir"
 )
 
 const packUsage = `Helm plugin to pack a helm chart. it uses the same options as the package command but it allows to inject values before packaging
@@ -21,8 +22,8 @@ Examples:
   $ helm pack . --set mykey=myvalue  # inject/update the mykey property with the myvalue value before creating the helm archive file
 `
 
-func newPackCmd(out io.Writer) *cobra.Command {
-	client := action.NewPackage()
+func NewPackCmd(args []string, out io.Writer) *cobra.Command {
+	client := manager.NewPackage()
 	valueOpts := &values.Options{}
 	cmd := &cobra.Command{
 		Use:   "pack [CHART_PATH] [...]",
@@ -89,5 +90,15 @@ func newPackCmd(out io.Writer) *cobra.Command {
 	f.StringVar(&client.AppVersion, "app-version", "", "set the appVersion on the chart to this version")
 	f.StringVarP(&client.Destination, "destination", "d", ".", "location to write the chart.")
 	f.BoolVarP(&client.DependencyUpdate, "dependency-update", "u", false, `update dependencies from "Chart.yaml" to dir "charts/" before packaging`)
+	f.StringArrayVar(&valueOpts.Values, "set", []string{}, "set values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2)")
+	f.Parse(args)
 	return cmd
+}
+
+// defaultKeyring returns the expanded path to the default keyring.
+func defaultKeyring() string {
+	if v, ok := os.LookupEnv("GNUPGHOME"); ok {
+		return filepath.Join(v, "pubring.gpg")
+	}
+	return filepath.Join(homedir.HomeDir(), ".gnupg", "pubring.gpg")
 }
