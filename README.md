@@ -1,6 +1,6 @@
 # helm-pack
 
-This is a helm plugin designed to be able to set properties before packaging
+This is a helm plugin designed to be able to set properties before packaging. it has the same flags as the helm package command except that you can define properties when packaging (`helm pack myfolder --set myprop=myval`)
 
 
 # Description

@@ -1,0 +1,22 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+project_name: helm-pack
+  
+builds:
+  - binary: ./bin/helmpack
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+    flags:
+      - -mod=vendor
+archives:
+  format: tar.gz
+  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  files:
+    - plugin.yaml
+    - LICENSE
