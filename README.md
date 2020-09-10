@@ -1,5 +1,7 @@
 # helm-pack
 
+[![Build Status](https://travis-ci.org/thynquest/helm-pack.svg?branch=master)](https://travis-ci.org/thynquest/helm-pack)
+
 This is a helm plugin designed to be able to set properties before packaging. it has the same flags as the helm package command except that you can define properties when packaging (`helm pack myfolder --set myprop=myval`)
 
 
