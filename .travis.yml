@@ -8,7 +8,7 @@ stages:
  - build
  - test
  - name: release
-   if: branch = master AND tag IS present
+   if: branch = master #AND tag IS present
    
 
 jobs:
