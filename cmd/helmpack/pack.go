@@ -26,7 +26,7 @@ func NewPackCmd(args []string, out io.Writer) *cobra.Command {
 	client := manager.NewPackage()
 	valueOpts := &values.Options{}
 	cmd := &cobra.Command{
-		Use:   "pack [CHART_PATH] [...]",
+		Use:   "helm pack [CHART_PATH] [...]",
 		Short: "pack a chart directory into a chart archive",
 		Long:  packUsage,
 		RunE: func(cmd *cobra.Command, args []string) error {

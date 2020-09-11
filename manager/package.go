@@ -70,12 +70,12 @@ func (p *Package) Run(path string, vals map[string]interface{}) (string, error) 
 		// Otherwise save to set destination
 		dest = p.Destination
 	}
-	cvalues, errValues := chartutil.CoalesceValues(ch, vals)
-	if errValues != nil {
-		return "", errors.Wrap(errValues, "failed to retrieve values")
+	chartMerged, errMerge := MergeChartValues(ch, vals)
+	if errMerge != nil {
+		return "", errors.Wrap(errMerge, "failed to merge values")
 	}
-	ch.Values = cvalues
-	name, err := chartutil.Save(ch, dest)
+	//name, err := chartutil.Save(ch, dest)
+	name, err := chartutil.Save(chartMerged, dest)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to save")
 	}

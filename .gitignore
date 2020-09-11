@@ -1,2 +1,3 @@
-helmpack
 bin/
+.vscode/
+coverage.out

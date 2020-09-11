@@ -32,6 +32,10 @@ build_windows:
 link_windows:
 	@cp bin/windows/amd64/helmpush ./bin/helmpush
 
+.PHONY: test
+test:
+	./scripts/unit_test.sh
+
 .PHONY: clean
 clean:
 	@git status --ignored --short | grep '^!! ' | sed 's/!! //' | xargs rm -rf

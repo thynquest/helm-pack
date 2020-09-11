@@ -7,6 +7,8 @@ jobs:
   include:
     - stage: build
       script: make build
+    - stage: test
+      script: make test
     - stage: release
       script:
         - curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
