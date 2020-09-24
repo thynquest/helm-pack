@@ -74,8 +74,9 @@ func (p *Package) Run(path string, vals map[string]interface{}) (string, error) 
 	if errMerge != nil {
 		return "", errors.Wrap(errMerge, "failed to merge values")
 	}
-	//name, err := chartutil.Save(ch, dest)
 	name, err := chartutil.Save(chartMerged, dest)
+	//name, err := chartutil.Save(ch, dest)
+
 	if err != nil {
 		return "", errors.Wrap(err, "failed to save")
 	}

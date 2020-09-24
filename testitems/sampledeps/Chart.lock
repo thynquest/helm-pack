@@ -1,0 +1,6 @@
+dependencies:
+- name: kanister-mysql
+  repository: https://charts.kanister.io
+  version: 0.32.0
+digest: sha256:a115a6de49d9e7dfb386fc5e9483369c99101358b178db84ed210af16136d7a8
+generated: "2020-09-25T00:40:10.171442222+02:00"
