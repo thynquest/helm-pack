@@ -8,9 +8,9 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
+
 	"golang.org/x/crypto/ssh/terminal"
 	"helm.sh/helm/v3/pkg/chart"
-	"helm.sh/helm/v3/pkg/chart/loader"
 	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/provenance"
 )
@@ -26,6 +26,7 @@ type Package struct {
 	AppVersion       string
 	Destination      string
 	DependencyUpdate bool
+	NoDeps           bool
 	RepositoryConfig string
 	RepositoryCache  string
 }
@@ -37,7 +38,8 @@ func NewPackage() *Package {
 
 // Run executes 'helm package' against the given chart and returns the path to the packaged chart.
 func (p *Package) Run(path string, vals map[string]interface{}) (string, error) {
-	ch, err := loader.LoadDir(path)
+	ch, err := LoadDir(path, p)
+	//ch, err := loader.LoadDir(path)
 	if err != nil {
 		return "", err
 	}
@@ -53,9 +55,12 @@ func (p *Package) Run(path string, vals map[string]interface{}) (string, error) 
 		ch.Metadata.AppVersion = p.AppVersion
 	}
 
-	if reqs := ch.Metadata.Dependencies; reqs != nil {
-		if err := CheckDependencies(ch, reqs); err != nil {
-			return "", err
+	// If the no-deps switch is disabled we check the dependencies
+	if !p.NoDeps {
+		if reqs := ch.Metadata.Dependencies; reqs != nil {
+			if err := CheckDependencies(ch, reqs); err != nil {
+				return "", err
+			}
 		}
 	}
 

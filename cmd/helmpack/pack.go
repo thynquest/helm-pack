@@ -57,20 +57,21 @@ func NewPackCmd(args []string, out io.Writer) *cobra.Command {
 				if _, err := os.Stat(args[i]); err != nil {
 					return err
 				}
+				if !client.NoDeps {
+					if client.DependencyUpdate {
+						downloadManager := &downloader.Manager{
+							Out:              ioutil.Discard,
+							ChartPath:        path,
+							Keyring:          client.Keyring,
+							Getters:          p,
+							Debug:            settings.Debug,
+							RepositoryConfig: settings.RepositoryConfig,
+							RepositoryCache:  settings.RepositoryCache,
+						}
 
-				if client.DependencyUpdate {
-					downloadManager := &downloader.Manager{
-						Out:              ioutil.Discard,
-						ChartPath:        path,
-						Keyring:          client.Keyring,
-						Getters:          p,
-						Debug:            settings.Debug,
-						RepositoryConfig: settings.RepositoryConfig,
-						RepositoryCache:  settings.RepositoryCache,
-					}
-
-					if err := downloadManager.Update(); err != nil {
-						return err
+						if err := downloadManager.Update(); err != nil {
+							return err
+						}
 					}
 				}
 				p, err := client.Run(path, vals)
@@ -90,6 +91,7 @@ func NewPackCmd(args []string, out io.Writer) *cobra.Command {
 	f.StringVar(&client.AppVersion, "app-version", "", "set the appVersion on the chart to this version")
 	f.StringVarP(&client.Destination, "destination", "d", ".", "location to write the chart.")
 	f.BoolVarP(&client.DependencyUpdate, "dependency-update", "u", false, `update dependencies from "Chart.yaml" to dir "charts/" before packaging`)
+	f.BoolVarP(&client.NoDeps, "no-deps", "n", false, `disables the dependencies from "Chart.yaml" before packaging`)
 	f.StringArrayVar(&valueOpts.Values, "set", []string{}, "set values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2)")
 	f.Parse(args)
 	return cmd

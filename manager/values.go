@@ -18,7 +18,10 @@ func MergeChartValues(c *chart.Chart, values map[string]interface{}) (*chart.Cha
 			if errValues != nil {
 				return nil, errors.Wrap(errValues, "failed to retrieve values")
 			}
-			m, _ := yaml.Marshal(cvalues)
+			m, err := yaml.Marshal(cvalues)
+			if err != nil {
+				return nil, err
+			}
 			content = m
 			i = k
 			break
