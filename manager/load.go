@@ -33,6 +33,9 @@ func LoadFiles(files []*loader.BufferedFile, p *Package) (*chart.Chart, error) {
 			if c.Metadata.APIVersion == "" {
 				c.Metadata.APIVersion = chart.APIVersionV1
 			}
+			if p.NoDeps {
+				c.Metadata.Dependencies = nil
+			}
 		case f.Name == "Chart.lock":
 			c.Lock = new(chart.Lock)
 			if err := yaml.Unmarshal(f.Data, &c.Lock); err != nil {

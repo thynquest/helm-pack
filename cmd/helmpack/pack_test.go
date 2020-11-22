@@ -168,6 +168,20 @@ func TestPackWithNoDependencies(t *testing.T) {
 		if strings.Contains(hdr.Name, "charts") {
 			testNoDepsOk = false
 		}
+
+		//test if the dependencies property does not exist
+		if strings.Contains(hdr.Name, "Chart.yaml") {
+			bs, _ := ioutil.ReadAll(tr)
+			values := map[string]interface{}{}
+			if errUnmarshal := yaml.Unmarshal(bs, &values); errUnmarshal != nil {
+				t.Errorf("failed reading chart yaml file: %v", errUnmarshal)
+			}
+			_, ok := values["dependencies"].(map[string]interface{})
+			if ok {
+				testNoDepsOk = false
+			}
+		}
+
 		//if the values has been modified
 		if strings.Contains(hdr.Name, "values.yaml") {
 			bs, _ := ioutil.ReadAll(tr)
